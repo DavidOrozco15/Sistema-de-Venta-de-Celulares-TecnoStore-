@@ -24,4 +24,19 @@ public class ValidadorCliente {
     public static boolean esNombreValido(String nombre) {
         return nombre != null && nombre.trim().length() >= 2;
     }
+
+    public static void validarCampos(String nombre, String identificacion, String correo, String telefono) {
+        if (!esNombreValido(nombre)) {
+            throw new IllegalArgumentException("El nombre no es válido (debe tener al menos 2 caracteres).");
+        }
+        if (!esIdentificacionValida(identificacion)) {
+            throw new IllegalArgumentException("La identificación es inválida (debe tener entre 6 y 15 números).");
+        }
+        if (!esCorreoValido(correo)) {
+            throw new IllegalArgumentException("El formato del correo electrónico es incorrecto.");
+        }
+        if (!esTelefonoValido(telefono)) {
+            throw new IllegalArgumentException("El teléfono es inválido (debe tener entre 7 y 15 números).");
+        }
+    }
 }

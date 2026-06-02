@@ -1,4 +1,60 @@
 package com.tecnostore.config;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class ConexionDB {
+    private static final String URL      = "jdbc:mysql://mysql-1e21e2c5-dyonix.b.aivencloud.com"
+            + "?useSSL=false&serverTimezone=UTC";
+    private static final String USUARIO  = "avnadmin";
+    private static final String PASSWORD = "AVNS_S6WMCfNmW9WO9vfUl8u";
+
+    private static ConexionDB instancia;   // única instancia (Singleton)
+    private Connection conexion;
+
+    private ConexionDB() {
+        conectar();
+    }
+
+    public static ConexionDB getInstancia() {
+        if (instancia == null) {
+            instancia = new ConexionDB();
+        }
+        return instancia;
+    }
+
+
+    private void conectar() {
+        try {
+            this.conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+            System.out.println("[DB] Conexión establecida con tecnostore_db.");
+        } catch (SQLException e) {
+            throw new RuntimeException("[DB] No se pudo conectar: " + e.getMessage());
+        }
+    }
+
+    public Connection getConexion() {
+        try {
+            if (conexion == null || conexion.isClosed()) {
+                conectar();
+            }
+        } catch (SQLException e) {
+            conectar();
+        }
+        return conexion;
+    }
+
+    public void cerrar() {
+        try {
+            if (conexion != null && !conexion.isClosed()) {
+                conexion.close();
+                System.out.println("[DB] Conexión cerrada.");
+            }
+        } catch (SQLException e) {
+            System.err.println("[DB] Error al cerrar: " + e.getMessage());
+        }
+    }
+
+
 }
