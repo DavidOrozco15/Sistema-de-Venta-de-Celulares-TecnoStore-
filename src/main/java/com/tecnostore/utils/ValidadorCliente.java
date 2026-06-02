@@ -1,0 +1,27 @@
+package com.tecnostore.utils;
+
+public class ValidadorCliente {
+
+    private static final String REGEX_CORREO = "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$";
+    private static final String REGEX_IDENTIFICACION = "^[0-9]{6,15}$";
+    private static final String REGEX_TELEFONO       = "^[0-9]{7,15}$";
+
+    public static boolean esCorreoValido(String correo) {
+        if (correo == null || correo.isBlank()) return false;
+        return correo.trim().matches(REGEX_CORREO);          // ← sin Pattern
+    }
+
+    public static boolean esIdentificacionValida(String identificacion) {
+        if (identificacion == null || identificacion.isBlank()) return false;
+        return identificacion.trim().matches(REGEX_IDENTIFICACION);
+    }
+
+    public static boolean esTelefonoValido(String telefono) {
+        if (telefono == null || telefono.isBlank()) return false;
+        return telefono.trim().matches(REGEX_TELEFONO);
+    }
+
+    public static boolean esNombreValido(String nombre) {
+        return nombre != null && nombre.trim().length() >= 2;
+    }
+}
