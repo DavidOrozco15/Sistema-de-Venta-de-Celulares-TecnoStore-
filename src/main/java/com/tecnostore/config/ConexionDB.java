@@ -8,7 +8,7 @@ public class ConexionDB {
     private static final String URL      = "jdbc:mysql://mysql-1e21e2c5-dyonix.b.aivencloud.com"
             + "?useSSL=false&serverTimezone=UTC";
     private static final String USUARIO  = "avnadmin";
-    private static final String PASSWORD = "AVNS_S6WMCfNmW9WO9vfUl8u";
+    private static final String PASSWORD = "";
 
     private static ConexionDB instancia;   // única instancia (Singleton)
     private Connection conexion;
