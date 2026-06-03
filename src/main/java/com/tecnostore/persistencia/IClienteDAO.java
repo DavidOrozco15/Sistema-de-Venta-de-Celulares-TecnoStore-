@@ -1,4 +1,6 @@
-package com.tecnostore.model;
+package com.tecnostore.persistencia;
+import com.tecnostore.model.Cliente;
+
 import java.sql.SQLException;
 
 public interface IClienteDAO {

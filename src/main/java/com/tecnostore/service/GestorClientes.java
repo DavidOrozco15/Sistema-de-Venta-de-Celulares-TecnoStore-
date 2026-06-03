@@ -2,7 +2,7 @@ package com.tecnostore.service;
 
 
 import com.tecnostore.model.Cliente;
-import com.tecnostore.model.IClienteDAO;
+import com.tecnostore.persistencia.IClienteDAO;
 import com.tecnostore.utils.ValidadorCliente;
 import java.sql.SQLException;
 
