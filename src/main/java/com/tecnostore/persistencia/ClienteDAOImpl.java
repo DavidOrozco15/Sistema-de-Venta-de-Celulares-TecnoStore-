@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class ClienteDAO implements IClienteDAO {
+public class ClienteDAOImpl implements IClienteDAO {
     private Connection getConexion() {
         return ConexionDB.getInstancia().getConexion();
     }
