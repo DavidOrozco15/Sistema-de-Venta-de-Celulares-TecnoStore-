@@ -30,14 +30,14 @@ public class ScannerSingleton {
     }
 
     public int leerEntero(String mensaje) {
-        System.out.print(mensaje);
-        while (!scanner.hasNextInt()) {
-            System.out.print("Por favor, ingrese un número válido: ");
-            scanner.next();
+        while (true) {
+            System.out.print(mensaje);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("  Ingrese un número válido.");
+            }
         }
-        int numero = scanner.nextInt();
-        scanner.nextLine();
-        return numero;
     }
 
     public void cerrar() {
