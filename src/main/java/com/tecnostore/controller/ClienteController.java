@@ -1,7 +1,7 @@
 package com.tecnostore.controller;
 
 import com.tecnostore.model.Cliente;
-import com.tecnostore.persistencia.ClienteDAO;
+import com.tecnostore.persistencia.ClienteDAOimpl;
 import com.tecnostore.service.GestorClientes;
 import com.tecnostore.config.ScannerSingleton;
 
@@ -11,7 +11,7 @@ public class ClienteController {
     private final ScannerSingleton entrada;
 
     public ClienteController() {
-        this.gestorClientes = new GestorClientes(new ClienteDAO());
+        this.gestorClientes = new GestorClientes(new ClienteDAOimpl());
         this.entrada = ScannerSingleton.getInstancia();
     }
 
