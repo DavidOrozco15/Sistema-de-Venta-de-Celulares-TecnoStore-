@@ -15,25 +15,23 @@ public class Celular {
     }
 
     // Constructor completo (Para cuando registras un celular nuevo)
-    public Celular(int id, String marca, String modelo, double precio, int stock, String sistemaOperativo, Gama gama) {
-        this.id_celular = id;
+    public Celular(int id_celular, String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
+        this.id_celular = id_celular;
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
         this.stock = stock;
-        this.sistema_operativo = sistemaOperativo;
+        this.sistema_operativo = sistema_operativo;
         this.gama = gama;
     }
 
     // Getters y Setters
-
-
-    public int getId_celular() {
+    public int getId() {
         return id_celular;
     }
 
-    public void setId_celular(int id_celular) {
-        this.id_celular = id_celular;
+    public void setId(int id) {
+        this.id_celular = id;
     }
 
     public String getMarca() {
@@ -68,13 +66,12 @@ public class Celular {
         this.stock = stock;
     }
 
-
-    public String getSistema_operativo() {
+    public String getSistemaOperativo() {
         return sistema_operativo;
     }
 
-    public void setSistema_operativo(String sistema_operativo) {
-        this.sistema_operativo = sistema_operativo;
+    public void setSistemaOperativo(String sistemaOperativo) {
+        this.sistema_operativo = sistemaOperativo;
     }
 
     public Gama getGama() {
