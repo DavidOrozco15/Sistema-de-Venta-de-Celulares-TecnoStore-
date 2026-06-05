@@ -51,4 +51,26 @@ public class ClienteDAOimpl implements IClienteDAO {
         }
     }
 
+    @Override
+    public Cliente buscarPorIdentificacion(String identificacion) throws SQLException {
+        String sql = "SELECT id_cliente, nombre, identificacion, correo, telefono " +
+                "FROM clientes WHERE identificacion = ?";
+
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
+            ps.setString(1, identificacion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Cliente(
+                            rs.getInt("id_cliente"),
+                            rs.getString("nombre"),
+                            rs.getString("identificacion"),
+                            rs.getString("correo"),
+                            rs.getString("telefono")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
 }

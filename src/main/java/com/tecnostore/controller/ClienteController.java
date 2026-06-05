@@ -10,8 +10,8 @@ public class ClienteController {
     private final GestorClientes gestorClientes;
     private final ScannerSingleton entrada;
 
-    public ClienteController() {
-        this.gestorClientes = new GestorClientes(new ClienteDAOimpl());
+    public ClienteController(GestorClientes gestorClientes) {
+        this.gestorClientes = gestorClientes;
         this.entrada = ScannerSingleton.getInstancia();
     }
 

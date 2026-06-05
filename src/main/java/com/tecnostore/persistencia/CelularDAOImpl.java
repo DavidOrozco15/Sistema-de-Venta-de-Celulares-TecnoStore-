@@ -22,7 +22,7 @@ public class CelularDAOImpl implements ICelularDAO {
             ps.setDouble(3, celular.getPrecio());
             ps.setInt(4, celular.getStock());
             ps.setString(5, celular.getSistema_operativo());
-            ps.setString(6, celular.getGama().name());
+            ps.setString(6, celular.getGama().name().toLowerCase());
 
             ps.executeUpdate();
 
@@ -47,7 +47,7 @@ public class CelularDAOImpl implements ICelularDAO {
             ps.setDouble(3, celular.getPrecio());
             ps.setInt(4, celular.getStock());
             ps.setString(5, celular.getSistema_operativo());
-            ps.setString(6, celular.getGama().name());
+            ps.setString(6, celular.getGama().name().toLowerCase());
             ps.setInt(7, celular.getId_celular());
 
             ps.executeUpdate();
@@ -56,7 +56,8 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public void eliminar(int id) throws SQLException {
-        String sql = "DELETE FROM celulares WHERE id_celular = ?";
+        // En vez de DELETE, lo "apagamos" lógicamente
+        String sql = "UPDATE celulares SET activo = false WHERE id_celular = ?";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -68,7 +69,8 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public List<Celular> listar() throws SQLException {
-        String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares";
+        // Agregamos la condición WHERE activo = true
+        String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE activo = true";
         List<Celular> listaCelulares = new ArrayList<>();
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
@@ -85,7 +87,8 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public Celular buscarPorId(int id) throws SQLException {
-        String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE id_celular = ?";
+        // Agregamos AND activo = true para no vender celulares borrados
+        String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE id_celular = ? AND activo = true";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {

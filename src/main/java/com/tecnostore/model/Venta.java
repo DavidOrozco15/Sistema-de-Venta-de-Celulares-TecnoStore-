@@ -12,8 +12,7 @@ public class Venta {
     private double        total;
 
     // Constructor sin ID porque la base de datos lo genera
-    public Venta(Cliente cliente, List<ItemVenta> items,
-                 LocalDate fecha, double total) {
+    public Venta(Cliente cliente, List<ItemVenta> items, LocalDate fecha, double total) {
         this.cliente = cliente;
         this.items   = items;
         this.fecha   = fecha;

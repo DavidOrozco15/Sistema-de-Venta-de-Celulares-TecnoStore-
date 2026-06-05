@@ -1,29 +1,31 @@
 package com.tecnostore;
 
-import com.tecnostore.controller.CelularController;
-
-import com.tecnostore.controller.ClienteController;
-import com.tecnostore.persistencia.CelularDAOImpl;
-import com.tecnostore.persistencia.ICelularDAO;
-import com.tecnostore.service.GestorCelulares;
+import com.tecnostore.controller.*;
+import com.tecnostore.persistencia.*;
+import com.tecnostore.service.*;
 import com.tecnostore.view.MenuPrincipal;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("🚀 Iniciando Sistema TecnoStore...");
 
-        // 1. Instancias la persistencia (Capa más baja)
+        // 1. Instanciar persistencia (DAOs)
         ICelularDAO celularDAO = new CelularDAOImpl();
+        IClienteDAO clienteDAO = new ClienteDAOimpl();
+        IVentaDAO   ventaDAO   = new VentaDAOimpl();
 
-// 2. Inyectas la persistencia en el servicio de negocio
+        // 2. Instanciar lógica de negocio (Servicios)
         GestorCelulares gestorCelulares = new GestorCelulares(celularDAO);
+        GestorClientes  gestorClientes  = new GestorClientes(clienteDAO);
+        GestorVentas    gestorVentas    = new GestorVentas(ventaDAO, celularDAO, clienteDAO);
 
-// 3. Inyectas el servicio en el controlador
+        // 3. Instanciar Controladores
         CelularController celularController = new CelularController(gestorCelulares);
-        ClienteController clienteController = new ClienteController();
+        ClienteController clienteController = new ClienteController(gestorClientes);
+        VentaController   ventaController   = new VentaController(gestorVentas);
 
-// 4. Inyectas el controlador a la vista principal
-        MenuPrincipal menuSistema = new MenuPrincipal(celularController, clienteController);
+        // 4. Inyectar todo al Menú Principal y arrancar
+        MenuPrincipal menuSistema = new MenuPrincipal(celularController, clienteController, ventaController);
         menuSistema.iniciarMenu();
     }
 }
