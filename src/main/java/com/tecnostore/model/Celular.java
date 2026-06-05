@@ -2,12 +2,12 @@ package com.tecnostore.model;
 
 public class Celular {
     // Atributos privados requeridos
-    private int id;
+    private int id_celular;
     private String marca;
     private String modelo;
     private double precio;
     private int stock;
-    private String sistemaOperativo;
+    private String sistema_operativo;
     private Gama gama; // Aquí implementamos tu nuevo Enum
 
     // Constructor vacío (Muy útil para cuando instancias desde la Base de Datos o la Vista)
@@ -16,22 +16,24 @@ public class Celular {
 
     // Constructor completo (Para cuando registras un celular nuevo)
     public Celular(int id, String marca, String modelo, double precio, int stock, String sistemaOperativo, Gama gama) {
-        this.id = id;
+        this.id_celular = id;
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
         this.stock = stock;
-        this.sistemaOperativo = sistemaOperativo;
+        this.sistema_operativo = sistemaOperativo;
         this.gama = gama;
     }
 
     // Getters y Setters
-    public int getId() {
-        return id;
+
+
+    public int getId_celular() {
+        return id_celular;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_celular(int id_celular) {
+        this.id_celular = id_celular;
     }
 
     public String getMarca() {
@@ -66,12 +68,13 @@ public class Celular {
         this.stock = stock;
     }
 
-    public String getSistemaOperativo() {
-        return sistemaOperativo;
+
+    public String getSistema_operativo() {
+        return sistema_operativo;
     }
 
-    public void setSistemaOperativo(String sistemaOperativo) {
-        this.sistemaOperativo = sistemaOperativo;
+    public void setSistema_operativo(String sistema_operativo) {
+        this.sistema_operativo = sistema_operativo;
     }
 
     public Gama getGama() {
@@ -86,12 +89,12 @@ public class Celular {
     @Override
     public String toString() {
         return "Celular [" +
-                "ID=" + id +
+                "ID=" + id_celular +
                 ", Marca='" + marca + '\'' +
                 ", Modelo='" + modelo + '\'' +
                 ", Precio=$" + precio +
                 ", Stock=" + stock +
-                ", S.O.='" + sistemaOperativo + '\'' +
+                ", S.O.='" + sistema_operativo + '\'' +
                 ", Gama=" + gama +
                 ']';
     }

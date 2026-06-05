@@ -4,9 +4,10 @@ import com.tecnostore.model.Celular;
 import com.tecnostore.model.Gama;
 import com.tecnostore.persistencia.ICelularDAO;
 import com.tecnostore.persistencia.CelularDAOImpl;
-import com.tecnostore.persistencia.ICelularDAO;
+
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CelularController {
@@ -27,7 +28,7 @@ public class CelularController {
             // Creamos el objeto con los datos recibidos de la vista
             Celular nuevo = new Celular(0, marca, modelo, precio, stock, sistemaOperativo, gama);
             Celular registrado = celularDAO.registrar(nuevo);
-            return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId();
+            return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId_celular();
         } catch (SQLException e) {
             return "❌ Error en la base de datos al registrar: " + e.getMessage();
         }
@@ -41,7 +42,7 @@ public class CelularController {
             return celularDAO.listar();
         } catch (SQLException e) {
             System.out.println("❌ Error al listar celulares: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -73,7 +74,7 @@ public class CelularController {
             existente.setModelo(modelo);
             existente.setPrecio(precio);
             existente.setStock(stock);
-            existente.setSistemaOperativo(sistemaOperativo);
+            existente.setSistema_operativo(sistemaOperativo);
             existente.setGama(gama);
 
             celularDAO.actualizar(existente);
