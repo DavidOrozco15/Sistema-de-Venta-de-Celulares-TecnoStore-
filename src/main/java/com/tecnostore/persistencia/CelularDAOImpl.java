@@ -21,14 +21,14 @@ public class CelularDAOImpl implements ICelularDAO {
             ps.setString(2, celular.getModelo());
             ps.setDouble(3, celular.getPrecio());
             ps.setInt(4, celular.getStock());
-            ps.setString(5, celular.getSistemaOperativo());
+            ps.setString(5, celular.getSistema_operativo());
             ps.setString(6, celular.getGama().name());
 
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    celular.setId(rs.getInt(1));
+                    celular.setId_celular(rs.getInt(1));
                 }
             }
         }
@@ -37,7 +37,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public void actualizar(Celular celular) throws SQLException {
-        String sql = "UPDATE celulares SET marca = ?, modelo = ?, precio = ?, stock = ?, sistema_operativo = ?, gama = ? WHERE id = ?";
+        String sql = "UPDATE celulares SET marca = ?, modelo = ?, precio = ?, stock = ?, sistema_operativo = ?, gama = ? WHERE id_celular = ?";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -46,9 +46,9 @@ public class CelularDAOImpl implements ICelularDAO {
             ps.setString(2, celular.getModelo());
             ps.setDouble(3, celular.getPrecio());
             ps.setInt(4, celular.getStock());
-            ps.setString(5, celular.getSistemaOperativo());
+            ps.setString(5, celular.getSistema_operativo());
             ps.setString(6, celular.getGama().name());
-            ps.setInt(7, celular.getId());
+            ps.setInt(7, celular.getId_celular());
 
             ps.executeUpdate();
         }
@@ -56,7 +56,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public void eliminar(int id) throws SQLException {
-        String sql = "DELETE FROM celulares WHERE id = ?";
+        String sql = "DELETE FROM celulares WHERE id_celular = ?";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -68,7 +68,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public List<Celular> listar() throws SQLException {
-        String sql = "SELECT id, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares";
+        String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares";
         List<Celular> listaCelulares = new ArrayList<>();
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
@@ -85,7 +85,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public Celular buscarPorId(int id) throws SQLException {
-        String sql = "SELECT id, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE id = ?";
+        String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE id_celular = ?";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -108,15 +108,15 @@ public class CelularDAOImpl implements ICelularDAO {
      */
     private Celular construirCelularDesdeResultSet(ResultSet rs) throws SQLException {
         Celular celular = new Celular();
-        celular.setId(rs.getInt("id"));
+        celular.setId_celular(rs.getInt("id_celular"));
         celular.setMarca(rs.getString("marca"));
         celular.setModelo(rs.getString("modelo"));
         celular.setPrecio(rs.getDouble("precio"));
         celular.setStock(rs.getInt("stock"));
-        celular.setSistemaOperativo(rs.getString("sistema_operativo"));
+        celular.setSistema_operativo(rs.getString("sistema_operativo"));
 
         String gamaString = rs.getString("gama");
-        celular.setGama(Gama.valueOf(gamaString));
+        celular.setGama(Gama.valueOf(gamaString.toUpperCase()));
 
         return celular;
     }

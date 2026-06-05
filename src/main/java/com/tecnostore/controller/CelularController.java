@@ -5,6 +5,7 @@ import com.tecnostore.model.Gama;
 import com.tecnostore.service.GestorCelulares;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CelularController {
@@ -39,7 +40,7 @@ public class CelularController {
             return gestorCelulares.listar();
         } catch (SQLException e) {
             System.out.println("❌ Error al listar celulares: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
 

@@ -1,30 +1,31 @@
 package com.tecnostore.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Venta {
 
     private int           id;
     private Cliente       cliente;
-    //private List<ItemVenta> items;
+    private List<ItemVenta> items;
     private LocalDate fecha;
     private double        total;
 
     // Constructor sin ID porque la base de datos lo genera
-    public Venta(Cliente cliente, //List<ItemVenta> items,
+    public Venta(Cliente cliente, List<ItemVenta> items,
                  LocalDate fecha, double total) {
         this.cliente = cliente;
-        //this.items   = items;
+        this.items   = items;
         this.fecha   = fecha;
         this.total   = total;
     }
 
     // Constructor con ID para cargar desde la Base de datos
-    public Venta(int id, Cliente cliente, //List<ItemVenta> items,
+    public Venta(int id, Cliente cliente, List<ItemVenta> items,
                  LocalDate fecha, double total) {
         this.id      = id;
         this.cliente = cliente;
-        //this.items   = items;
+        this.items   = items;
         this.fecha   = fecha;
         this.total   = total;
     }
@@ -45,13 +46,13 @@ public class Venta {
         this.cliente = cliente;
     }
 
-//    public List<ItemVenta> getItems() {
-//        return items;
-//    }
+    public List<ItemVenta> getItems() {
+        return items;
+    }
 
-//    public void setItems(List<ItemVenta> items) {
-//        this.items = items;
-//    }
+    public void setItems(List<ItemVenta> items) {
+        this.items = items;
+    }
 
     public LocalDate getFecha() {
         return fecha;
@@ -74,7 +75,7 @@ public class Venta {
         return "Venta{" +
                 "id=" + id +
                 ", cliente=" + cliente +
-                //", items=" + items +
+                ", items=" + items +
                 ", fecha=" + fecha +
                 ", total=" + total +
                 '}';

@@ -89,7 +89,7 @@ public class MenuCelular {
         System.out.println("-----------------------------------------------------------------------------------------");
         for (Celular c : celulares) {
             System.out.printf("%-5d | %-12s | %-15s | $%-11.2f | %-8d | %-12s | %-10s\n",
-                    c.getId(), c.getMarca(), c.getModelo(), c.getPrecio(), c.getStock(), c.getSistemaOperativo(), c.getGama());
+                    c.getId_celular(), c.getMarca(), c.getModelo(), c.getPrecio(), c.getStock(), c.getSistema_operativo(), c.getGama());
         }
     }
 
@@ -123,7 +123,7 @@ public class MenuCelular {
         if (precio < 0) return;
 
         int stock = teclado.leerEntero("Nuevo Stock (" + existente.getStock() + "): ");
-        String so = teclado.leerTexto("Nuevo Sistema Operativo (" + existente.getSistemaOperativo() + "): ");
+        String so = teclado.leerTexto("Nuevo Sistema Operativo (" + existente.getSistema_operativo() + "): ");
         Gama gama = pedirGamaDinamica();
 
         String respuesta = controller.actualizarCelular(id, marca, modelo, precio, stock, so, gama);
