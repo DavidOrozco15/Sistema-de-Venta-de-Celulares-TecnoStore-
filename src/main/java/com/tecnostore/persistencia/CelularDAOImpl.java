@@ -118,12 +118,33 @@ public class CelularDAOImpl implements ICelularDAO {
         celular.setPrecio(rs.getDouble("precio"));
         celular.setStock(rs.getInt("stock"));
 
-        String sistema_operativoString = rs.getString("sistema_operativo");
-        celular.setSistema_operativo(SistemaOperativo.valueOf(sistema_operativoString.toUpperCase()));
+        // 1. Obtener Sistema Operativo sin forzar mayúsculas
+        String soDB = rs.getString("sistema_operativo");
+        celular.setSistema_operativo(buscarSistemaOperativo(soDB));
 
-        String gamaString = rs.getString("gama");
-        celular.setGama(Gama.valueOf(gamaString.toUpperCase()));
+        // 2. Obtener Gama sin forzar mayúsculas
+        String gamaDB = rs.getString("gama");
+        celular.setGama(buscarGama(gamaDB));
 
         return celular;
+    }
+
+    // Métodos auxiliares para buscar sin importar mayúsculas/minúsculas
+    private SistemaOperativo buscarSistemaOperativo(String valor) {
+        for (SistemaOperativo so : SistemaOperativo.values()) {
+            if (so.name().equalsIgnoreCase(valor)) {
+                return so;
+            }
+        }
+        return SistemaOperativo.Android; // Valor por defecto por seguridad
+    }
+
+    private Gama buscarGama(String valor) {
+        for (Gama g : Gama.values()) {
+            if (g.name().equalsIgnoreCase(valor)) {
+                return g;
+            }
+        }
+        return Gama.MEDIA; // Valor por defecto por seguridad
     }
 }
