@@ -20,12 +20,15 @@ public class MenuPrincipal {
     public void iniciarMenu() {
         int opcion;
         do {
-            System.out.println("\n========================================");
-            System.out.println("          MENÚ PRINCIPAL TECNOSTORE     ");
-            System.out.println("========================================");
-            System.out.println("1. Módulo de Celulares");
-            System.out.println("2. Módulo de Clientes");
-            System.out.println("0. Salir del Sistema");
+            System.out.println("\n╔══════════════════════════════════════╗");
+            System.out.println("║       Bienvenido a TecnoStore        ║");
+            System.out.println("╠══════════════════════════════════════╣");
+            System.out.println("║  1. Gestión de Clientes              ║");
+            System.out.println("║  2. Gestión de Celulares  [pendiente]║");
+            System.out.println("║  3. Gestión de Ventas     [pendiente]║");
+            System.out.println("║  4. Reportes              [pendiente]║");
+            System.out.println("║  0. Salir                            ║");
+            System.out.println("╚══════════════════════════════════════╝");
 
             opcion = teclado.leerEntero("Seleccione un módulo: ");
 

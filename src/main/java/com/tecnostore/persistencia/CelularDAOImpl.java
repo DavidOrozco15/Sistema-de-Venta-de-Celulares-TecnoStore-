@@ -108,7 +108,7 @@ public class CelularDAOImpl implements ICelularDAO {
      */
     private Celular construirCelularDesdeResultSet(ResultSet rs) throws SQLException {
         Celular celular = new Celular();
-        celular.setId_celular(rs.getInt("id"));
+        celular.setId_celular(rs.getInt("id_celular"));
         celular.setMarca(rs.getString("marca"));
         celular.setModelo(rs.getString("modelo"));
         celular.setPrecio(rs.getDouble("precio"));
