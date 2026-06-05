@@ -26,7 +26,7 @@ public class CelularController {
     public String registrarCelular(String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
         try {
             Celular registrado = gestorCelulares.registrar(marca, modelo, precio, stock, sistema_operativo, gama);
-            return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId();
+            return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId_celular();
         } catch (SQLException e) {
             return "❌ Error en el servicio al registrar: " + e.getMessage();
         }
@@ -70,7 +70,7 @@ public class CelularController {
             existente.setModelo(modelo);
             existente.setPrecio(precio);
             existente.setStock(stock);
-            existente.setSistemaOperativo(sistema_operativo);
+            existente.setSistema_operativo(sistema_operativo);
             existente.setGama(gama);
 
             gestorCelulares.actualizar(existente);

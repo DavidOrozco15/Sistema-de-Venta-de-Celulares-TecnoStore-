@@ -26,12 +26,14 @@ public class Celular {
     }
 
     // Getters y Setters
-    public int getId() {
+
+
+    public int getId_celular() {
         return id_celular;
     }
 
-    public void setId(int id) {
-        this.id_celular = id;
+    public void setId_celular(int id_celular) {
+        this.id_celular = id_celular;
     }
 
     public String getMarca() {
@@ -66,12 +68,12 @@ public class Celular {
         this.stock = stock;
     }
 
-    public String getSistemaOperativo() {
+    public String getSistema_operativo() {
         return sistema_operativo;
     }
 
-    public void setSistemaOperativo(String sistemaOperativo) {
-        this.sistema_operativo = sistemaOperativo;
+    public void setSistema_operativo(String sistema_operativo) {
+        this.sistema_operativo = sistema_operativo;
     }
 
     public Gama getGama() {
