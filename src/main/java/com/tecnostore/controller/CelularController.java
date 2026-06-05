@@ -2,43 +2,41 @@ package com.tecnostore.controller;
 
 import com.tecnostore.model.Celular;
 import com.tecnostore.model.Gama;
-import com.tecnostore.persistencia.ICelularDAO;
-import com.tecnostore.persistencia.CelularDAOImpl;
-import com.tecnostore.persistencia.ICelularDAO;
+import com.tecnostore.service.GestorCelulares;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class CelularController {
 
-    // El controlador se comunica directamente con la capa de persistencia (DAO)
-    private final ICelularDAO celularDAO;
+    // SOLID D: Ahora el controlador depende únicamente de la capa superior de servicio
+    private final GestorCelulares gestorCelulares;
 
-    // Constructor donde inicializamos la implementación del DAO
-    public CelularController() {
-        this.celularDAO = new CelularDAOImpl();
+    /**
+     * SOLID D: Recibe el servicio ya instanciado por inversión de dependencias.
+     */
+    public CelularController(GestorCelulares gestorCelulares) {
+        this.gestorCelulares = gestorCelulares;
     }
 
     /**
-     * Lógica para registrar un nuevo celular.
+     * Lógica para orquestar el registro de un nuevo celular.
      */
-    public String registrarCelular(String marca, String modelo, double precio, int stock, String sistemaOperativo, Gama gama) {
+    public String registrarCelular(String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
         try {
-            // Creamos el objeto con los datos recibidos de la vista
-            Celular nuevo = new Celular(0, marca, modelo, precio, stock, sistemaOperativo, gama);
-            Celular registrado = celularDAO.registrar(nuevo);
+            Celular registrado = gestorCelulares.registrar(marca, modelo, precio, stock, sistema_operativo, gama);
             return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId();
         } catch (SQLException e) {
-            return "❌ Error en la base de datos al registrar: " + e.getMessage();
+            return "❌ Error en el servicio al registrar: " + e.getMessage();
         }
     }
 
     /**
-     * Retorna la lista completa de celulares para que la vista los imprima.
+     * Retorna la lista completa de celulares mapeada desde el servicio.
      */
     public List<Celular> listarCelulares() {
         try {
-            return celularDAO.listar();
+            return gestorCelulares.listar();
         } catch (SQLException e) {
             System.out.println("❌ Error al listar celulares: " + e.getMessage());
             return null;
@@ -46,11 +44,11 @@ public class CelularController {
     }
 
     /**
-     * Busca un celular específico usando su ID.
+     * Busca un celular específico usando su ID a través del servicio.
      */
     public Celular buscarCelular(int id) {
         try {
-            return celularDAO.buscarPorId(id);
+            return gestorCelulares.buscarPorId(id);
         } catch (SQLException e) {
             System.out.println("❌ Error al buscar el celular con ID " + id + ": " + e.getMessage());
             return null;
@@ -58,46 +56,43 @@ public class CelularController {
     }
 
     /**
-     * Lógica para actualizar un celular existente.
+     * Lógica para actualizar los datos de un celular existente.
      */
-    public String actualizarCelular(int id, String marca, String modelo, double precio, int stock, String sistemaOperativo, Gama gama) {
+    public String actualizarCelular(int id, String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
         try {
-            // 1. Validamos primero si el celular realmente existe en la BD usando nuestro 5° método
-            Celular existente = celularDAO.buscarPorId(id);
+            Celular existente = gestorCelulares.buscarPorId(id);
             if (existente == null) {
                 return "❌ Error: No existe ningún celular con el ID: " + id;
             }
 
-            // 2. Si existe, actualizamos sus datos
             existente.setMarca(marca);
             existente.setModelo(modelo);
             existente.setPrecio(precio);
             existente.setStock(stock);
-            existente.setSistemaOperativo(sistemaOperativo);
+            existente.setSistemaOperativo(sistema_operativo);
             existente.setGama(gama);
 
-            celularDAO.actualizar(existente);
+            gestorCelulares.actualizar(existente);
             return "🔄 Celular con ID " + id + " actualizado correctamente.";
         } catch (SQLException e) {
-            return "❌ Error en la base de datos al actualizar: " + e.getMessage();
+            return "❌ Error en el servicio al actualizar: " + e.getMessage();
         }
     }
 
     /**
-     * Lógica para eliminar un celular del sistema.
+     * Lógica para eliminar un celular del sistema de manera segura.
      */
     public String eliminarCelular(int id) {
         try {
-            // Validamos si existe antes de intentar borrarlo de las tablas
-            Celular existente = celularDAO.buscarPorId(id);
+            Celular existente = gestorCelulares.buscarPorId(id);
             if (existente == null) {
                 return "❌ Error: No se encontró ningún celular con el ID: " + id;
             }
 
-            celularDAO.eliminar(id);
+            gestorCelulares.eliminar(id);
             return "🗑️ Celular con ID " + id + " eliminado permanentemente.";
         } catch (SQLException e) {
-            return "❌ Error en la base de datos al eliminar: " + e.getMessage();
+            return "❌ Error en el servicio al eliminar: " + e.getMessage();
         }
     }
 }
