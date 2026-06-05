@@ -124,10 +124,11 @@ public class MenuCelular {
         if (precio < 0) return;
 
         int stock = teclado.leerEntero("Nuevo Stock (" + existente.getStock() + "): ");
-        String so = teclado.leerTexto("Nuevo Sistema Operativo (" + existente.getSistema_operativo() + "): ");
+//        String so = teclado.leerTexto("Nuevo Sistema Operativo (" + existente.getSistema_operativo() + "): ");
+        SistemaOperativo sistema_operativo = pedirSODinamico();
         Gama gama = pedirGamaDinamica();
 
-        String respuesta = controller.actualizarCelular(id, marca, modelo, precio, stock, so, gama);
+        String respuesta = controller.actualizarCelular(id, marca, modelo, precio, stock, sistema_operativo, gama);
         System.out.println(respuesta);
     }
 

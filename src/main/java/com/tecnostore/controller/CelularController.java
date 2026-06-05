@@ -60,7 +60,7 @@ public class CelularController {
     /**
      * Lógica para actualizar los datos de un celular existente.
      */
-    public String actualizarCelular(int id, String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
+    public String actualizarCelular(int id, String marca, String modelo, double precio, int stock, SistemaOperativo sistema_operativo, Gama gama) {
         try {
             Celular existente = gestorCelulares.buscarPorId(id);
             if (existente == null) {
@@ -71,7 +71,7 @@ public class CelularController {
             existente.setModelo(modelo);
             existente.setPrecio(precio);
             existente.setStock(stock);
-            existente.setSistema_operativo(SistemaOperativo.valueOf(sistema_operativo));
+            existente.setSistema_operativo(sistema_operativo);
             existente.setGama(gama);
 
             gestorCelulares.actualizar(existente);
