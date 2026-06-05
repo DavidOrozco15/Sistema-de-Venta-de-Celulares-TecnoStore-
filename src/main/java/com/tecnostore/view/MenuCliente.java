@@ -9,7 +9,7 @@ public class MenuCliente {
     private final ScannerSingleton entrada;
 
     public MenuCliente(ClienteController clienteController) {
-        this.clienteController = new ClienteController();
+        this.clienteController = clienteController;
         this.entrada = ScannerSingleton.getInstancia();
     }
 

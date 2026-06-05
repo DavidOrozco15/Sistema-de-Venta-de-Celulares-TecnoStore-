@@ -47,7 +47,7 @@ public class CelularDAOImpl implements ICelularDAO {
             ps.setString(2, celular.getModelo());
             ps.setDouble(3, celular.getPrecio());
             ps.setInt(4, celular.getStock());
-            ps.setString(5, celular.getSistema_operativo());
+            ps.setString(5, celular.getSistema_operativo().name());
             ps.setString(6, celular.getGama().name().toLowerCase());
             ps.setInt(7, celular.getId_celular());
 
