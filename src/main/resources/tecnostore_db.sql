@@ -19,7 +19,8 @@ CREATE TABLE celulares (
     sistema_operativo  ENUM( 'Android', 'iOS', 'Windows_Phone') NOT NULL,
     gama               ENUM('alta','media','baja') NOT NULL,
     precio             DECIMAL(8,2)    NOT NULL,
-    stock              INT             NOT NULL
+    stock              INT             NOT NULL,
+    activo             BOOLEAN         DEFAULT TRUE
 );
 
 CREATE TABLE ventas (

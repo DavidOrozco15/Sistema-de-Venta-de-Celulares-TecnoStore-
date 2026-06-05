@@ -3,17 +3,22 @@ package com.tecnostore.view;
 import com.tecnostore.config.ScannerSingleton;
 import com.tecnostore.controller.CelularController;
 import com.tecnostore.controller.ClienteController;
+import com.tecnostore.controller.VentaController;
 
 public class MenuPrincipal {
 
     private final CelularController celularController;
     private final ClienteController clienteController;
+    private final VentaController ventaController;
     private final ScannerSingleton teclado;
 
     // El constructor recibe ambos controladores desde el Main (Inyección de Dependencias)
-    public MenuPrincipal(CelularController celularController, ClienteController clienteController) {
+    public MenuPrincipal(CelularController celularController,
+                         ClienteController clienteController,
+                         VentaController ventaController) {
         this.celularController = celularController;
         this.clienteController = clienteController;
+        this.ventaController = ventaController;
         this.teclado = ScannerSingleton.getInstancia();
     }
 
