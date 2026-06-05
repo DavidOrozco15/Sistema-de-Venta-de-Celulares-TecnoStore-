@@ -8,7 +8,7 @@ public class MenuCliente {
     private final ClienteController clienteController;
     private final ScannerSingleton entrada;
 
-    public MenuCliente() {
+    public MenuCliente(ClienteController clienteController) {
         this.clienteController = new ClienteController();
         this.entrada = ScannerSingleton.getInstancia();
     }
