@@ -1,7 +1,8 @@
 package com.tecnostore.service;
 
 import com.tecnostore.model.Celular;
-import com.tecnostore.model.Gama;
+import com.tecnostore.model.emuns.Gama;
+import com.tecnostore.model.emuns.SistemaOperativo;
 import com.tecnostore.persistencia.ICelularDAO;
 
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class GestorCelulares {
         this.celularDAO = celularDAO;
     }
 
-    public Celular registrar(String marca, String modelo, double precio, int stock, String sistemaOperativo, Gama gama) throws SQLException {
+    public Celular registrar(String marca, String modelo, double precio, int stock, SistemaOperativo sistemaOperativo, Gama gama) throws SQLException {
         Celular nuevo = new Celular(0, marca, modelo, precio, stock, sistemaOperativo, gama);
         return celularDAO.registrar(nuevo);
     }

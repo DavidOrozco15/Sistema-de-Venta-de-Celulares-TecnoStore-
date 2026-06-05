@@ -1,5 +1,8 @@
 package com.tecnostore.model;
 
+import com.tecnostore.model.emuns.Gama;
+import com.tecnostore.model.emuns.SistemaOperativo;
+
 public class Celular {
     // Atributos privados requeridos
     private int id_celular;
@@ -7,7 +10,7 @@ public class Celular {
     private String modelo;
     private double precio;
     private int stock;
-    private String sistema_operativo;
+    private SistemaOperativo sistema_operativo;
     private Gama gama; // Aquí implementamos tu nuevo Enum
 
     // Constructor vacío (Muy útil para cuando instancias desde la Base de Datos o la Vista)
@@ -15,7 +18,7 @@ public class Celular {
     }
 
     // Constructor completo (Para cuando registras un celular nuevo)
-    public Celular(int id_celular, String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
+    public Celular(int id_celular, String marca, String modelo, double precio, int stock, SistemaOperativo sistema_operativo, Gama gama) {
         this.id_celular = id_celular;
         this.marca = marca;
         this.modelo = modelo;
@@ -68,11 +71,11 @@ public class Celular {
         this.stock = stock;
     }
 
-    public String getSistema_operativo() {
+    public SistemaOperativo getSistema_operativo() {
         return sistema_operativo;
     }
 
-    public void setSistema_operativo(String sistema_operativo) {
+    public void setSistema_operativo(SistemaOperativo sistema_operativo) {
         this.sistema_operativo = sistema_operativo;
     }
 

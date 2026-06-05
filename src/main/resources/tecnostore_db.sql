@@ -16,7 +16,7 @@ CREATE TABLE celulares (
     id_celular         INT UNSIGNED    NOT NULL AUTO_INCREMENT PRIMARY KEY,
     marca              VARCHAR(255)    NOT NULL,
     modelo             VARCHAR(255)    NOT NULL,
-    sistema_operativo  VARCHAR(255)    NOT NULL,
+    sistema_operativo  ENUM( 'Android', 'iOS', 'Windows_Phone') NOT NULL,
     gama               ENUM('alta','media','baja') NOT NULL,
     precio             DECIMAL(8,2)    NOT NULL,
     stock              INT             NOT NULL,

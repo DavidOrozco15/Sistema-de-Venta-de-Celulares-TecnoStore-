@@ -39,15 +39,13 @@ public class MenuPrincipal {
 
             switch (opcion) {
                 case 1 -> {
-                    // Le pasamos el controlador que vino desde el Main a la vista SOLID
+                    MenuCliente menuCliente = new MenuCliente(clienteController);
+                    menuCliente.mostrar();
+                                    }
+                case 2 -> {
                     MenuCelular menuCelular = new MenuCelular(celularController);
                     menuCelular.iniciarMenu();
-                }
-                case 2 -> {
-                    System.out.println("Abriendo módulo de clientes...");
-                    // Aquí harías lo mismo con clientes cuando lo tengan listo:
-                    // MenuCliente menuCliente = new MenuCliente(clienteController);
-                    // menuCliente.iniciarMenu();
+
                 }
                 case 0 -> {
                     System.out.println("👋 ¡Gracias por usar TecnoStore! Cerrando recursos...");

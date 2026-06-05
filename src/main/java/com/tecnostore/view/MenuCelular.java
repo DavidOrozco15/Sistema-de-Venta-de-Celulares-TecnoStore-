@@ -3,7 +3,8 @@ package com.tecnostore.view;
 import com.tecnostore.config.ScannerSingleton;
 import com.tecnostore.controller.CelularController;
 import com.tecnostore.model.Celular;
-import com.tecnostore.model.Gama;
+import com.tecnostore.model.emuns.Gama;
+import com.tecnostore.model.emuns.SistemaOperativo;
 
 import java.util.List;
 
@@ -68,10 +69,10 @@ public class MenuCelular {
         if (precio < 0) return;
 
         int stock = teclado.leerEntero("Stock inicial: ");
-        String so = teclado.leerTexto("Sistema Operativo: ");
+        SistemaOperativo sistema_operativo= pedirSODinamico();
         Gama gama = pedirGamaDinamica();
 
-        String respuesta = controller.registrarCelular(marca, modelo, precio, stock, so, gama);
+        String respuesta = controller.registrarCelular(marca, modelo, precio, stock, sistema_operativo, gama);
         System.out.println(respuesta);
     }
 
@@ -146,6 +147,23 @@ public class MenuCelular {
      * SOLID O (Open/Closed): Lee el Enum de forma dinámica.
      * Si el Enum cambia en el futuro, este método NO requiere modificaciones.
      */
+
+    private SistemaOperativo pedirSODinamico() {
+        SistemaOperativo[] opciones = SistemaOperativo.values();
+        int seleccion;
+
+        do {
+            System.out.println("Seleccione el SistemaOperativo:");
+            for (int i = 0; i < opciones.length; i++) {
+                System.out.println((i + 1) + ". " + opciones[i]);
+            }
+            seleccion = teclado.leerEntero("Opción: ");
+        } while (seleccion < 1 || seleccion > opciones.length);
+
+        return opciones[seleccion - 1];
+    }
+
+
     private Gama pedirGamaDinamica() {
         Gama[] opciones = Gama.values();
         int seleccion;

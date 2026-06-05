@@ -2,7 +2,8 @@ package com.tecnostore.persistencia;
 
 import com.tecnostore.config.ConexionDB;
 import com.tecnostore.model.Celular;
-import com.tecnostore.model.Gama;
+import com.tecnostore.model.emuns.Gama;
+import com.tecnostore.model.emuns.SistemaOperativo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ public class CelularDAOImpl implements ICelularDAO {
             ps.setString(2, celular.getModelo());
             ps.setDouble(3, celular.getPrecio());
             ps.setInt(4, celular.getStock());
-            ps.setString(5, celular.getSistema_operativo());
-            ps.setString(6, celular.getGama().name().toLowerCase());
+            ps.setString(5, celular.getSistema_operativo().name());
+            ps.setString(6, celular.getGama().name());
 
             ps.executeUpdate();
 
@@ -116,7 +117,9 @@ public class CelularDAOImpl implements ICelularDAO {
         celular.setModelo(rs.getString("modelo"));
         celular.setPrecio(rs.getDouble("precio"));
         celular.setStock(rs.getInt("stock"));
-        celular.setSistema_operativo(rs.getString("sistema_operativo"));
+
+        String sistema_operativoString = rs.getString("sistema_operativo");
+        celular.setSistema_operativo(SistemaOperativo.valueOf(sistema_operativoString.toUpperCase()));
 
         String gamaString = rs.getString("gama");
         celular.setGama(Gama.valueOf(gamaString.toUpperCase()));

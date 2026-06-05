@@ -1,7 +1,8 @@
 package com.tecnostore.controller;
 
 import com.tecnostore.model.Celular;
-import com.tecnostore.model.Gama;
+import com.tecnostore.model.emuns.Gama;
+import com.tecnostore.model.emuns.SistemaOperativo;
 import com.tecnostore.service.GestorCelulares;
 
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class CelularController {
     /**
      * Lógica para orquestar el registro de un nuevo celular.
      */
-    public String registrarCelular(String marca, String modelo, double precio, int stock, String sistema_operativo, Gama gama) {
+    public String registrarCelular(String marca, String modelo, double precio, int stock, SistemaOperativo sistema_operativo, Gama gama) {
         try {
             Celular registrado = gestorCelulares.registrar(marca, modelo, precio, stock, sistema_operativo, gama);
             return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId_celular();
@@ -70,7 +71,7 @@ public class CelularController {
             existente.setModelo(modelo);
             existente.setPrecio(precio);
             existente.setStock(stock);
-            existente.setSistema_operativo(sistema_operativo);
+            existente.setSistema_operativo(SistemaOperativo.valueOf(sistema_operativo));
             existente.setGama(gama);
 
             gestorCelulares.actualizar(existente);
