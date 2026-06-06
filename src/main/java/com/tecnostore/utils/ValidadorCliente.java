@@ -27,16 +27,16 @@ public class ValidadorCliente {
 
     public static void validarCampos(String nombre, String identificacion, String correo, String telefono) {
         if (!esNombreValido(nombre)) {
-            throw new IllegalArgumentException("El nombre no es válido (debe tener al menos 2 caracteres).");
+            throw new IllegalArgumentException("❌ El nombre debe tener al menos 2 caracteres.");
         }
         if (!esIdentificacionValida(identificacion)) {
-            throw new IllegalArgumentException("La identificación es inválida (debe tener entre 6 y 15 números).");
+            throw new IllegalArgumentException("❌ Identificación inválida (debe tener entre 6 y 15 dígitos).");
         }
         if (!esCorreoValido(correo)) {
-            throw new IllegalArgumentException("El formato del correo electrónico es incorrecto.");
+            throw new IllegalArgumentException("❌ El formato del correo electrónico no es válido.");
         }
         if (!esTelefonoValido(telefono)) {
-            throw new IllegalArgumentException("El teléfono es inválido (debe tener entre 7 y 15 números).");
+            throw new IllegalArgumentException("❌ Teléfono inválido (debe tener entre 7 y 15 dígitos).");
         }
     }
 }

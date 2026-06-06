@@ -24,7 +24,7 @@ public class GestorVentas {
         this.clienteDAO = clienteDAO;
     }
 
-    // ── Buscar cliente para asociar a la venta ───────────────────────────
+    // Busca cliente por identificación
     public Cliente buscarCliente(String identificacion) {
         try {
             return clienteDAO.buscarPorIdentificacion(identificacion);
@@ -33,7 +33,7 @@ public class GestorVentas {
         }
     }
 
-    // ── Buscar celular para agregar a la venta ───────────────────────────
+    // Busca celular por ID
     public Celular buscarCelular(int id) {
         try {
             return celularDAO.buscarPorId(id);
@@ -42,46 +42,37 @@ public class GestorVentas {
         }
     }
 
-    // ── Registrar la venta completa ──────────────────────────────────────
+    // Registra la venta y valida stock
     public Venta registrarVenta(Cliente cliente, List<ItemVenta> items) {
-
-        if (items == null || items.isEmpty())
-            throw new IllegalArgumentException("Debe agregar al menos un celular.");
-
-        // Validar stock de cada ítem
-        for (ItemVenta item : items) {
-            if (item.getCantidad() <= 0)
-                throw new IllegalArgumentException(
-                        "La cantidad debe ser mayor a 0.");
-            if (item.getCelular().getStock() < item.getCantidad())
-                throw new IllegalArgumentException(
-                        "Stock insuficiente para: "
-                                + item.getCelular().getMarca() + " "
-                                + item.getCelular().getModelo()
-                                + " (disponible: " + item.getCelular().getStock() + ")");
+        if (items == null || items.isEmpty()) {
+            throw new IllegalArgumentException("❌ La lista de ítems no puede estar vacía.");
         }
 
-        // Calcular total con IVA usando Stream API ← requerido por el enunciado
-        double subtotalSum = items.stream()
-                .mapToDouble(ItemVenta::getSubtotal)
-                .sum();
+        // Validación de stock
+        for (ItemVenta item : items) {
+            if (item.getCantidad() <= 0)
+                throw new IllegalArgumentException("❌ La cantidad debe ser mayor a 0.");
+
+            if (item.getCelular().getStock() < item.getCantidad())
+                throw new IllegalArgumentException("❌ Stock insuficiente para: "
+                        + item.getCelular().getMarca() + " " + item.getCelular().getModelo());
+        }
+
+        // Cálculo de total con IVA
+        double subtotalSum = items.stream().mapToDouble(ItemVenta::getSubtotal).sum();
         double total = Math.round(subtotalSum * (1 + IVA) * 100.0) / 100.0;
 
         try {
-            // Crear y guardar la venta
-            // Le pasamos "items" directamente al constructor
             Venta venta = new Venta(cliente, items, LocalDate.now(), total);
             venta.setItems(items);
             ventaDAO.registrar(venta);
-
             return venta;
-
         } catch (SQLException e) {
             throw new RuntimeException("Error al registrar la venta: " + e.getMessage());
         }
     }
 
-    // ── Listar todas las ventas (para reportes) ──────────────────────────
+    // Lista todas las ventas para reportes
     public List<Venta> listarVentas() {
         try {
             return ventaDAO.listarTodas();
