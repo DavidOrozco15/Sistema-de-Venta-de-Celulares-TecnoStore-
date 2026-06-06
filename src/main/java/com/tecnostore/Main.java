@@ -1,31 +1,42 @@
 package com.tecnostore;
 
-import com.tecnostore.controller.*;
+import com.tecnostore.config.ConexionDB;
+import com.tecnostore.controller.CelularController;
+import com.tecnostore.controller.ClienteController;
+import com.tecnostore.controller.VentaController;
 import com.tecnostore.persistencia.*;
-import com.tecnostore.service.*;
+import com.tecnostore.service.GestorCelulares;
+import com.tecnostore.service.GestorClientes;
+import com.tecnostore.service.GestorVentas;
 import com.tecnostore.view.MenuPrincipal;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("🚀 Iniciando Sistema TecnoStore...");
 
-        // 1. Instanciar persistencia (DAOs)
-        ICelularDAO celularDAO = new CelularDAOImpl();
+    public static void main(String[] args) {
+
+        // ── DAOs ──────────────────────────────────────────────────────────
         IClienteDAO clienteDAO = new ClienteDAOimpl();
+        ICelularDAO celularDAO = new CelularDAOImpl();
         IVentaDAO   ventaDAO   = new VentaDAOimpl();
 
-        // 2. Instanciar lógica de negocio (Servicios)
-        GestorCelulares gestorCelulares = new GestorCelulares(celularDAO);
+        // ── Servicios ─────────────────────────────────────────────────────
         GestorClientes  gestorClientes  = new GestorClientes(clienteDAO);
+        GestorCelulares gestorCelulares = new GestorCelulares(celularDAO);
         GestorVentas    gestorVentas    = new GestorVentas(ventaDAO, celularDAO, clienteDAO);
 
-        // 3. Instanciar Controladores
-        CelularController celularController = new CelularController(gestorCelulares);
+        // ── Controladores ─────────────────────────────────────────────────
         ClienteController clienteController = new ClienteController(gestorClientes);
+        CelularController celularController = new CelularController(gestorCelulares);
         VentaController   ventaController   = new VentaController(gestorVentas);
 
-        // 4. Inyectar todo al Menú Principal y arrancar
-        MenuPrincipal menuSistema = new MenuPrincipal(celularController, clienteController, ventaController);
-        menuSistema.iniciarMenu();
+        // ── Arrancar ──────────────────────────────────────────────────────
+        MenuPrincipal menu = new MenuPrincipal(
+                celularController,
+                clienteController,
+                ventaController
+        );
+        menu.iniciarMenu();
+
+        ConexionDB.getInstancia().cerrar();
     }
 }
