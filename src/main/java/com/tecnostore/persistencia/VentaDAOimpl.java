@@ -11,68 +11,66 @@ import java.util.List;
 
 public class VentaDAOimpl implements IVentaDAO {
 
-    private Connection getConexion() {
+    private Connection getConexion() throws SQLException {
         return ConexionDB.getInstancia().getConexion();
     }
 
     @Override
     public Venta registrar(Venta venta) throws SQLException {
-        Connection con = getConexion();
-        boolean autoCommitOriginal = con.getAutoCommit();
-        con.setAutoCommit(false); // ← inicio de transacción
+        // Usamos try-with-resources para asegurar que la conexión se cierre/libere al final
+        try (Connection con = getConexion()) {
+            boolean autoCommitOriginal = con.getAutoCommit();
+            con.setAutoCommit(false); // ← Inicio de transacción (Atomicidad)
 
-        try {
-            // 1. Insertar en ventas
-            String sqlVenta = "INSERT INTO ventas (id_cliente, fecha, total) " +
-                    "VALUES (?, ?, ?)";
+            try {
+                // 1. Insertar la cabecera de la venta
+                String sqlVenta = "INSERT INTO ventas (id_cliente, fecha, total) VALUES (?, ?, ?)";
+                try (PreparedStatement psVenta = con.prepareStatement(sqlVenta, Statement.RETURN_GENERATED_KEYS)) {
+                    psVenta.setInt(1, venta.getCliente().getId());
+                    psVenta.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
+                    psVenta.setDouble(3, venta.getTotal());
+                    psVenta.executeUpdate();
 
-            try (PreparedStatement ps = con.prepareStatement(
-                    sqlVenta, Statement.RETURN_GENERATED_KEYS)) {
-
-                ps.setInt(1, venta.getCliente().getId());
-                ps.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
-                ps.setDouble(3, venta.getTotal());
-                ps.executeUpdate();
-
-                try (ResultSet keys = ps.getGeneratedKeys()) {
-                    if (keys.next()) venta.setId(keys.getInt(1));
+                    // Obtener el ID autogenerado
+                    try (ResultSet keys = psVenta.getGeneratedKeys()) {
+                        if (keys.next()) {
+                            venta.setId(keys.getInt(1));
+                        }
+                    }
                 }
-            }
 
-            // 2. Insertar cada ítem en detalle_ventas
-            String sqlDetalle = "INSERT INTO detalle_ventas " +
-                    "(id_venta, id_celular, cantidad, subtotal) " +
-                    "VALUES (?, ?, ?, ?)";
-
-            try (PreparedStatement ps = con.prepareStatement(sqlDetalle)) {
-                for (ItemVenta item : venta.getItems()) {
-                    ps.setInt(1, venta.getId());
-                    ps.setInt(2, item.getCelular().getId_celular());
-                    ps.setInt(3, item.getCantidad());
-                    ps.setDouble(4, item.getSubtotal());
-                    ps.addBatch();
+                // 2. Insertar los detalles de la venta (Usando Batch para mayor rendimiento)
+                String sqlDetalle = "INSERT INTO detalle_ventas (id_venta, id_celular, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement psDetalle = con.prepareStatement(sqlDetalle)) {
+                    for (ItemVenta item : venta.getItems()) {
+                        psDetalle.setInt(1, venta.getId());
+                        psDetalle.setInt(2, item.getCelular().getId_celular());
+                        psDetalle.setInt(3, item.getCantidad());
+                        psDetalle.setDouble(4, item.getSubtotal());
+                        psDetalle.addBatch(); // Se encola la instrucción
+                    }
+                    psDetalle.executeBatch(); // Se ejecutan todas de golpe
                 }
-                ps.executeBatch();
-            }
 
-            String sqlStock = "UPDATE celulares SET stock = stock - ? WHERE id_celular = ?";
-            try (PreparedStatement psStock = con.prepareStatement(sqlStock)) {
-                for (ItemVenta item : venta.getItems()) {
-                    psStock.setInt(1, item.getCantidad());
-                    // Asegúrate de que el getter coincida con el nombre que tienes en Celular.java
-                    psStock.setInt(2, item.getCelular().getId_celular());
-                    psStock.addBatch();
+                // 3. Descontar el stock de los celulares (También usando Batch)
+                String sqlStock = "UPDATE celulares SET stock = stock - ? WHERE id_celular = ?";
+                try (PreparedStatement psStock = con.prepareStatement(sqlStock)) {
+                    for (ItemVenta item : venta.getItems()) {
+                        psStock.setInt(1, item.getCantidad());
+                        psStock.setInt(2, item.getCelular().getId_celular());
+                        psStock.addBatch(); // Se encola la instrucción
+                    }
+                    psStock.executeBatch(); // Se ejecutan todas de golpe
                 }
-                psStock.executeBatch();
+
+                con.commit(); // ← Confirmar toda la transacción si todo salió bien
+
+            } catch (SQLException e) {
+                con.rollback(); // ← Revertir todo si ocurrió un error (Integridad de datos)
+                throw e;
+            } finally {
+                con.setAutoCommit(autoCommitOriginal); // ← Restaurar comportamiento por defecto
             }
-
-            con.commit(); // ← confirmar transacción
-
-        } catch (SQLException e) {
-            con.rollback(); // ← revertir si algo falla
-            throw e;
-        } finally {
-            con.setAutoCommit(autoCommitOriginal);
         }
 
         return venta;
@@ -87,7 +85,8 @@ public class VentaDAOimpl implements IVentaDAO {
                 "INNER JOIN clientes c ON v.id_cliente = c.id_cliente " +
                 "ORDER BY v.fecha DESC";
 
-        try (PreparedStatement ps = getConexion().prepareStatement(sql);
+        try (Connection con = getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -102,7 +101,7 @@ public class VentaDAOimpl implements IVentaDAO {
                 Venta venta = new Venta(
                         rs.getInt("id_venta"),
                         cliente,
-                        new ArrayList<>(), // <--- Aquí está el argumento que faltaba
+                        new ArrayList<>(), // Se inicia con lista vacía de ítems
                         rs.getDate("fecha").toLocalDate(),
                         rs.getDouble("total")
                 );
