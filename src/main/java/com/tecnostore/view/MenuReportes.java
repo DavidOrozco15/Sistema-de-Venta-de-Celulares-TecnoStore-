@@ -18,12 +18,15 @@ public class MenuReportes {
     public void iniciarMenu() {
         int opcion;
         do {
-            System.out.println("\n📊 --- MÓDULO DE REPORTES Y ANÁLISIS ---");
-            System.out.println("1. Reporte: Celulares con stock bajo (< 5 unidades)");
-            System.out.println("2. Reporte: Top 3 celulares más vendidos");
-            System.out.println("3. Reporte: Ventas totales por mes");
-            System.out.println("4. Volver al Menú Principal");
-
+            System.out.println("\n╔══════════════════════════════════════╗");
+            System.out.println("║         MÓDULO DE REPORTES           ║");
+            System.out.println("╠══════════════════════════════════════╣");
+            System.out.println("║  1. Stock bajo (< 5 unidades)        ║");
+            System.out.println("║  2. Top 3 más vendidos               ║");
+            System.out.println("║  3. Ventas totales por mes           ║");
+            System.out.println("╠══════════════════════════════════════╣");
+            System.out.println("║  4. Volver al Menú Principal         ║");
+            System.out.println("╚══════════════════════════════════════╝");
 
             opcion = teclado.leerEntero("Seleccione Reporte: ");
             procesarOpcion(opcion);

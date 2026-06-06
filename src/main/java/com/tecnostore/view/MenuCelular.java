@@ -36,15 +36,16 @@ public class MenuCelular {
     }
 
     private void mostrarOpciones() {
-        System.out.println("\n========================================");
-        System.out.println("      TECNOSTORE - GESTIÓN DE CELULARES  ");
-        System.out.println("========================================");
-        System.out.println("1. Registrar Celular");
-        System.out.println("2. Listar Todos los Celulares");
-        System.out.println("3. Buscar Celular por ID");
-        System.out.println("4. Actualizar Celular");
-        System.out.println("5. Eliminar Celular");
-        System.out.println("0. Volver al Menú Principal");
+        System.out.println("\n╔══════════════════════════════════════╗");
+        System.out.println("║      GESTIÓN DE CELULARES            ║");
+        System.out.println("╠══════════════════════════════════════╣");
+        System.out.println("║  1. Registrar Celular                ║");
+        System.out.println("║  2. Listar Todos los Celulares       ║");
+        System.out.println("║  3. Buscar Celular por ID            ║");
+        System.out.println("║  4. Actualizar Celular               ║");
+        System.out.println("║  5. Eliminar Celular                 ║");
+        System.out.println("║  0. Volver al Menú Principal         ║");
+        System.out.println("╚══════════════════════════════════════╝");
     }
 
     private void procesarOpcion(int opcion) {
