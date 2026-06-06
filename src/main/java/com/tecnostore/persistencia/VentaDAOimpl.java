@@ -1,11 +1,25 @@
 package com.tecnostore.persistencia;
 
 import com.tecnostore.config.ConexionDB;
+<<<<<<< HEAD
+
+import com.tecnostore.model.Celular;
+import com.tecnostore.model.Cliente;
+import com.tecnostore.model.ItemVenta;
+import com.tecnostore.model.Venta;
+import com.tecnostore.model.emuns.Gama;
+import com.tecnostore.model.emuns.SistemaOperativo;
+
+
+import java.sql.*;
+import java.time.LocalDate;
+=======
 import com.tecnostore.model.Cliente;
 import com.tecnostore.model.ItemVenta;
 import com.tecnostore.model.Venta;
 
 import java.sql.*;
+>>>>>>> 5bd7acd3c5dc39ed0d378af5185101e17a3f0129
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,4 +125,125 @@ public class VentaDAOimpl implements IVentaDAO {
         }
         return ventas;
     }
+<<<<<<< HEAD
+
+    //================================================================================================================================================
+
+
+    @Override
+    public List<Venta> listar() throws SQLException {
+        List<Venta> ventas = new ArrayList<>();
+        // Hacemos JOIN con clientes porque tu constructor de Venta exige un objeto Cliente obligatoriamente
+        String sql = "SELECT v.id_venta, v.fecha, v.total, " +
+                "       c.id_cliente, c.nombre, c.identificacion, c.correo, c.telefono " +
+                "FROM ventas v " +
+                "JOIN clientes c ON v.id_cliente = c.id_cliente";
+
+        try (Connection con = ConexionDB.getInstancia().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // 1. Reconstruimos el Cliente básico requerido por el constructor
+                Cliente cliente = new Cliente(
+                        rs.getInt("id_cliente"),
+                        rs.getString("nombre"),
+                        rs.getString("identificacion"),
+                        rs.getString("correo"),
+                        rs.getString("telefono")
+                );
+
+                int idVenta = rs.getInt("id_venta");
+                LocalDate fecha = rs.getDate("fecha").toLocalDate();
+                double total = rs.getDouble("total");
+
+                // 2. Instanciamos pasándole una lista vacía de ítems (ya que este método no trae detalles)
+                Venta venta = new Venta(idVenta, cliente, new ArrayList<>(), fecha, total);
+                ventas.add(venta);
+            }
+        }
+        return ventas;
+    }
+
+    @Override
+    public List<Venta> listarConDetalles() throws SQLException {
+        List<Venta> ventas = new ArrayList<>();
+
+        // Query completa uniendo Ventas, Clientes, Detalles (ItemVenta) y Celulares
+        String sql = "SELECT v.id_venta, v.fecha, v.total, " +
+                "       cl.id_cliente, cl.nombre, cl.identificacion, cl.correo, cl.telefono, " +
+                "       dv.id_detalle_venta, dv.cantidad, dv.subtotal, " +
+                "       ce.id_celular, ce.marca, ce.modelo, ce.sistema_operativo, ce.gama, ce.precio, ce.stock " +
+                "FROM ventas v " +
+                "JOIN clientes cl ON v.id_cliente = cl.id_cliente " +
+                "JOIN detalle_ventas dv ON v.id_venta = dv.id_venta " +
+                "JOIN celulares ce ON dv.id_celular = ce.id_celular " +
+                "ORDER BY v.id_venta";
+
+        try (Connection con = ConexionDB.getInstancia().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            Venta ventaActual = null;
+            List<ItemVenta> itemsActuales = null;
+
+            while (rs.next()) {
+                int idVenta = rs.getInt("id_venta");
+
+                // Si cambiamos de venta en el ResultSet o es la primera iteración
+                if (ventaActual == null || ventaActual.getId() != idVenta) {
+
+                    // 1. Reconstruimos el Cliente
+                    Cliente cliente = new Cliente(
+                            rs.getInt("id_cliente"),
+                            rs.getString("nombre"),
+                            rs.getString("identificacion"),
+                            rs.getString("correo"),
+                            rs.getString("telefono")
+                    );
+
+                    LocalDate fecha = rs.getDate("fecha").toLocalDate();
+                    double total = rs.getDouble("total");
+
+                    // 2. Inicializamos la lista de ítems para esta nueva venta
+                    itemsActuales = new ArrayList<>();
+
+                    // 3. Creamos la venta usando tu segundo constructor (con ID)
+                    ventaActual = new Venta(idVenta, cliente, itemsActuales, fecha, total);
+                    ventas.add(ventaActual);
+                }
+
+                // 4. Reconstruimos el Celular para asignárselo al ítem
+                // Nota: Convertimos el String de la BD al Enum Gama correspondiente
+                Gama gamaEnum = Gama.valueOf(rs.getString("gama").toUpperCase());
+                String soBD = rs.getString("sistema_operativo").trim();
+                SistemaOperativo soEnum = SistemaOperativo.valueOf(soBD);
+
+                Celular celular = new Celular(
+                        rs.getInt("id_celular"),
+                        rs.getString("marca"),
+                        rs.getString("modelo"),
+                        rs.getDouble("precio"),
+                        rs.getInt("stock"),
+                        soEnum,
+                        gamaEnum
+                );
+
+                // 5. Creamos el ItemVenta usando tu constructor con ID
+                ItemVenta item = new ItemVenta(
+                        rs.getInt("id_detalle_venta"),
+                        celular,
+                        rs.getInt("cantidad"),
+                        rs.getDouble("subtotal")
+                );
+
+                // 6. Agregamos el ítem a la lista interna de la venta que se está procesando
+                itemsActuales.add(item);
+            }
+        }
+        return ventas;
+    }
+
+=======
+>>>>>>> 5bd7acd3c5dc39ed0d378af5185101e17a3f0129
 }
