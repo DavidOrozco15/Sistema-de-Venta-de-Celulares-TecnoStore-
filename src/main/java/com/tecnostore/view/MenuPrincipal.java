@@ -3,6 +3,7 @@ package com.tecnostore.view;
 import com.tecnostore.config.ScannerSingleton;
 import com.tecnostore.controller.CelularController;
 import com.tecnostore.controller.ClienteController;
+import com.tecnostore.controller.ReporteController;
 import com.tecnostore.controller.VentaController;
 
 public class MenuPrincipal {
@@ -10,15 +11,19 @@ public class MenuPrincipal {
     private final CelularController celularController;
     private final ClienteController clienteController;
     private final VentaController   ventaController;
+    private final ReporteController reporteController;
     private final ScannerSingleton  teclado;
 
+    // Constructor único corregido que recibe todos tus controladores
     public MenuPrincipal(CelularController celularController,
                          ClienteController clienteController,
-                         VentaController   ventaController) {
+                         VentaController   ventaController,
+                         ReporteController reporteController) {
         this.celularController = celularController;
         this.clienteController = clienteController;
         this.ventaController   = ventaController;
-        this.teclado = ScannerSingleton.getInstancia();
+        this.reporteController = reporteController;
+        this.teclado           = ScannerSingleton.getInstancia();
     }
 
     public void iniciarMenu() {
@@ -30,7 +35,7 @@ public class MenuPrincipal {
             System.out.println("║  1. Gestión de Clientes              ║");
             System.out.println("║  2. Gestión de Celulares             ║");
             System.out.println("║  3. Gestión de Ventas                ║");
-            System.out.println("║  4. Reportes              [pendiente]║");
+            System.out.println("║  4. Gestión de Reportes              ║");
             System.out.println("║  0. Salir                            ║");
             System.out.println("╚══════════════════════════════════════╝");
 
@@ -49,7 +54,10 @@ public class MenuPrincipal {
                     MenuVenta menuVenta = new MenuVenta(ventaController);
                     menuVenta.mostrar();
                 }
-                case 4 -> System.out.println("  [Módulo pendiente]");
+                case 4 ->  {
+                    MenuReportes menuReporte = new MenuReportes(reporteController);
+                    menuReporte.iniciarMenu();
+                }
                 case 0 -> {
                     System.out.println("👋 ¡Gracias por usar TecnoStore!");
                     teclado.cerrar();

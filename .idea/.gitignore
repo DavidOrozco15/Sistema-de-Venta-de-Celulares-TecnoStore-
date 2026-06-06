@@ -14,3 +14,8 @@ out/
 # Ignorar las configuraciones locales de IntelliJ IDEA
 .idea/
 *.iml
+
+out/
+target/
+.idea/
+*.class
