@@ -1,7 +1,6 @@
 package com.tecnostore.controller;
 
 import com.tecnostore.model.Cliente;
-import com.tecnostore.persistencia.ClienteDAOimpl;
 import com.tecnostore.service.GestorClientes;
 import com.tecnostore.config.ScannerSingleton;
 
@@ -15,21 +14,25 @@ public class ClienteController {
         this.entrada = ScannerSingleton.getInstancia();
     }
 
+    // Registra un nuevo cliente en el sistema
     public void registrar() {
-        System.out.println("\n── Registrar nuevo cliente ──");
-        String nombre         = entrada.leerTexto("Nombre:         ");
-        String identificacion = entrada.leerTexto("Identificación: ");
-        String correo         = entrada.leerTexto("Correo:         ");
-        String telefono       = entrada.leerTexto("Teléfono:       ");
+        System.out.println("\n╔══════════════════════════════════════╗");
+        System.out.println("║       Registrar Nuevo Cliente        ║");
+        System.out.println("╚══════════════════════════════════════╝");
+
+        String nombre         = entrada.leerTexto("--> Nombre:         ");
+        String identificacion = entrada.leerTexto("--> Identificación: ");
+        String correo         = entrada.leerTexto("--> Correo:         ");
+        String telefono       = entrada.leerTexto("--> Teléfono:       ");
 
         try {
             Cliente c = gestorClientes.registrarCliente(nombre, identificacion,
                     correo, telefono);
-            System.out.println("\n✔ Cliente registrado con ID: " + c.getId());
+            System.out.println("\n✅ Cliente registrado con éxito (ID: " + c.getId() + ")");
         } catch (IllegalArgumentException e) {
-            System.out.println("\n✘ Validación: " + e.getMessage());
+            System.out.println("\n❌ Validación: " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("\n✘ Error: " + e.getMessage());
+            System.out.println("\n❌ Error: " + e.getMessage());
         }
     }
 }

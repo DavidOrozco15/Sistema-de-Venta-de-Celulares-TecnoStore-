@@ -90,14 +90,7 @@ public class Celular {
     // Método toString opcional (Te servirá muchísimo en la consola/vista para listar los celulares)
     @Override
     public String toString() {
-        return "Celular [" +
-                "ID=" + id_celular +
-                ", Marca='" + marca + '\'' +
-                ", Modelo='" + modelo + '\'' +
-                ", Precio=$" + precio +
-                ", Stock=" + stock +
-                ", S.O.='" + sistema_operativo + '\'' +
-                ", Gama=" + gama +
-                ']';
+        return String.format("📱 CELULAR [ID: %d] | %s %s | Precio: $%.2f | Stock: %d | S.O: %s | Gama: %s",
+                this.id_celular, this.marca, this.modelo, this.precio, this.stock, this.sistema_operativo, this.gama);
     }
 }
