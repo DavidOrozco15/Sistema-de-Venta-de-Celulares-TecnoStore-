@@ -1,7 +1,6 @@
 package com.tecnostore.persistencia;
 
 import com.tecnostore.config.ConexionDB;
-<<<<<<< HEAD
 
 import com.tecnostore.model.Celular;
 import com.tecnostore.model.Cliente;
@@ -13,13 +12,9 @@ import com.tecnostore.model.emuns.SistemaOperativo;
 
 import java.sql.*;
 import java.time.LocalDate;
-=======
-import com.tecnostore.model.Cliente;
-import com.tecnostore.model.ItemVenta;
-import com.tecnostore.model.Venta;
 
-import java.sql.*;
->>>>>>> 5bd7acd3c5dc39ed0d378af5185101e17a3f0129
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +120,7 @@ public class VentaDAOimpl implements IVentaDAO {
         }
         return ventas;
     }
-<<<<<<< HEAD
+
 
     //================================================================================================================================================
 
@@ -244,6 +239,5 @@ public class VentaDAOimpl implements IVentaDAO {
         return ventas;
     }
 
-=======
->>>>>>> 5bd7acd3c5dc39ed0d378af5185101e17a3f0129
+
 }
