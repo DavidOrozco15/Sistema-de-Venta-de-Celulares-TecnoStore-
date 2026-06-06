@@ -4,6 +4,7 @@ import com.tecnostore.model.Celular;
 import com.tecnostore.model.emuns.Gama;
 import com.tecnostore.model.emuns.SistemaOperativo;
 import com.tecnostore.persistencia.ICelularDAO;
+import com.tecnostore.factory.CelularFactory;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +22,9 @@ public class GestorCelulares {
     }
 
     public Celular registrar(String marca, String modelo, double precio, int stock, SistemaOperativo sistemaOperativo, Gama gama) throws SQLException {
-        Celular nuevo = new Celular(0, marca, modelo, precio, stock, sistemaOperativo, gama);
+        // AHORA USAMOS LA FÁBRICA EN LUGAR DE 'new Celular(...)'
+        Celular nuevo = CelularFactory.crearCelular(0, marca, modelo, precio, stock, sistemaOperativo, gama);
+
         return celularDAO.registrar(nuevo);
     }
 
