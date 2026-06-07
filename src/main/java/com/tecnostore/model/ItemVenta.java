@@ -7,14 +7,13 @@ public class ItemVenta {
     private int     cantidad;
     private double  subtotal;
 
-    // Constructor sin ID porque la base de datos lo genera
+
     public ItemVenta(Celular celular, int cantidad, double subtotal) {
         this.celular = celular;
         this.cantidad = cantidad;
         this.subtotal = subtotal;
     }
 
-    // Constructor con ID para cargar desde la Base de datos
     public ItemVenta(int id, Celular celular, int cantidad, double subtotal) {
         this.id = id;
         this.celular = celular;

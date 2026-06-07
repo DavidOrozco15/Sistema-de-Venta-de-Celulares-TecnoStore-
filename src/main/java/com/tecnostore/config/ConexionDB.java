@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionDB {
-    private static final String URL = "jdbc:mysql://mysql-1e21e2c5-dyonix.b.aivencloud.com:19210/tecnostore_db?ssl-mode=REQUIRED";
+    private static final String URL = "jdbc:mysql://mysql-172478d7-aprendiendomysqlcorzo.b.aivencloud.com:13968/tecnostore_db?ssl-mode=REQUIRED";
     private static final String USUARIO = "avnadmin";
-    private static final String PASSWORD = "AVNS_S6WMCfNmW9WO9vfUl8u";
+    private static final String PASSWORD = "";
 
     private static ConexionDB instancia;
     private Connection conexion;
@@ -17,6 +17,7 @@ public class ConexionDB {
     }
 
     public static ConexionDB getInstancia() {
+
         if (instancia == null) {
             instancia = new ConexionDB();
         }

@@ -11,31 +11,26 @@ import java.util.List;
 
 public class CelularController {
 
-    // SOLID D: Ahora el controlador depende únicamente de la capa superior de servicio
     private final GestorCelulares gestorCelulares;
 
-    /**
-     * SOLID D: Recibe el servicio ya instanciado por inversión de dependencias.
-     */
     public CelularController(GestorCelulares gestorCelulares) {
         this.gestorCelulares = gestorCelulares;
     }
 
-    /**
-     * Lógica para orquestar el registro de un nuevo celular.
-     */
     public String registrarCelular(String marca, String modelo, double precio, int stock, SistemaOperativo sistema_operativo, Gama gama) {
         try {
             Celular registrado = gestorCelulares.registrar(marca, modelo, precio, stock, sistema_operativo, gama);
+            if (registrado == null) {
+                return "⚠️ El celular no pudo ser registrado debido a datos inválidos.";
+
+            }
             return "✅ Celular registrado con éxito. ID asignado: " + registrado.getId_celular();
         } catch (SQLException e) {
             return "❌ Error en el servicio al registrar: " + e.getMessage();
         }
     }
 
-    /**
-     * Retorna la lista completa de celulares mapeada desde el servicio.
-     */
+
     public List<Celular> listarCelulares() {
         try {
             return gestorCelulares.listar();
@@ -45,9 +40,7 @@ public class CelularController {
         }
     }
 
-    /**
-     * Busca un celular específico usando su ID a través del servicio.
-     */
+
     public Celular buscarCelular(int id) {
         try {
             return gestorCelulares.buscarPorId(id);
@@ -57,33 +50,23 @@ public class CelularController {
         }
     }
 
-    /**
-     * Lógica para actualizar los datos de un celular existente.
-     */
     public String actualizarCelular(int id, String marca, String modelo, double precio, int stock, SistemaOperativo sistema_operativo, Gama gama) {
         try {
-            Celular existente = gestorCelulares.buscarPorId(id);
-            if (existente == null) {
-                return "❌ Error: No existe ningún celular con el ID: " + id;
+            // Pasamos los datos primitivos directamente al gestor
+            // Él se encargará de validar antes de tocar la base de datos
+            boolean actualizado = gestorCelulares.actualizar(id, marca, modelo, precio, stock, sistema_operativo, gama);
+
+            if (!actualizado) {
+                return "⚠️ No se pudo actualizar el celular. Verifique los datos ingresados o el ID.";
             }
 
-            existente.setMarca(marca);
-            existente.setModelo(modelo);
-            existente.setPrecio(precio);
-            existente.setStock(stock);
-            existente.setSistema_operativo(sistema_operativo);
-            existente.setGama(gama);
-
-            gestorCelulares.actualizar(existente);
             return "🔄 Celular con ID " + id + " actualizado correctamente.";
         } catch (SQLException e) {
             return "❌ Error en el servicio al actualizar: " + e.getMessage();
         }
     }
 
-    /**
-     * Lógica para eliminar un celular del sistema de manera segura.
-     */
+
     public String eliminarCelular(int id) {
         try {
             Celular existente = gestorCelulares.buscarPorId(id);

@@ -10,22 +10,14 @@ import java.util.List;
 
 public class MenuCelular {
 
-    // SOLID D: Dependemos de la abstracción/parámetro, no instanciamos con 'new'
     private final CelularController controller;
     private final ScannerSingleton teclado;
 
-    /**
-     * Constructor con Inyección de Dependencias.
-     * Ahora el controlador se pasa desde el menú principal o el Main.
-     */
     public MenuCelular(CelularController controller) {
         this.controller = controller;
         this.teclado = ScannerSingleton.getInstancia();
     }
 
-    /**
-     * Menú principal del módulo de celulares.
-     */
     public void iniciarMenu() {
         int opcion;
         do {
@@ -65,9 +57,8 @@ public class MenuCelular {
         String marca = teclado.leerTexto("Marca: ");
         String modelo = teclado.leerTexto("Modelo: ");
 
-        // SOLID S: Delegamos el parseo a un método extractor para mantener limpia la lógica de negocio
+
         double precio = pedirDecimalSeguro("Precio: ");
-        if (precio < 0) return;
 
         int stock = teclado.leerEntero("Stock inicial: ");
         SistemaOperativo sistema_operativo= pedirSODinamico();
@@ -122,10 +113,9 @@ public class MenuCelular {
         String modelo = teclado.leerTexto("Nuevo Modelo (" + existente.getModelo() + "): ");
 
         double precio = pedirDecimalSeguro("Nuevo Precio ($" + existente.getPrecio() + "): ");
-        if (precio < 0) return;
 
         int stock = teclado.leerEntero("Nuevo Stock (" + existente.getStock() + "): ");
-//        String so = teclado.leerTexto("Nuevo Sistema Operativo (" + existente.getSistema_operativo() + "): ");
+
         SistemaOperativo sistema_operativo = pedirSODinamico();
         Gama gama = pedirGamaDinamica();
 
@@ -144,11 +134,6 @@ public class MenuCelular {
             System.out.println("❌ Operación cancelada.");
         }
     }
-
-    /**
-     * SOLID O (Open/Closed): Lee el Enum de forma dinámica.
-     * Si el Enum cambia en el futuro, este método NO requiere modificaciones.
-     */
 
     private SistemaOperativo pedirSODinamico() {
         SistemaOperativo[] opciones = SistemaOperativo.values();
@@ -181,9 +166,6 @@ public class MenuCelular {
         return opciones[seleccion - 1];
     }
 
-    /**
-     * SOLID S: Auxiliar encargado exclusivamente de asegurar el parseo de datos de entrada.
-     */
     private double pedirDecimalSeguro(String mensaje) {
         try {
             return Double.parseDouble(teclado.leerTexto(mensaje));

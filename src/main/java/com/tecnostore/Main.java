@@ -34,7 +34,6 @@ public class Main {
         ReporteController reporteController = new ReporteController(gestorReporte);
 
         // ── Arrancar ──────────────────────────────────────────────────────
-        // Le pasamos los 4 controladores en el orden que espera tu MenuPrincipal limpio
         MenuPrincipal menu = new MenuPrincipal(
                 celularController,
                 clienteController,

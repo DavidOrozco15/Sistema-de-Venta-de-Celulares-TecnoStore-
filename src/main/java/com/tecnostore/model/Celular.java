@@ -4,20 +4,20 @@ import com.tecnostore.model.emuns.Gama;
 import com.tecnostore.model.emuns.SistemaOperativo;
 
 public class Celular {
-    // Atributos privados requeridos
+
     private int id_celular;
     private String marca;
     private String modelo;
     private double precio;
     private int stock;
     private SistemaOperativo sistema_operativo;
-    private Gama gama; // Aquí implementamos tu nuevo Enum
+    private Gama gama;
 
-    // Constructor vacío (Muy útil para cuando instancias desde la Base de Datos o la Vista)
+
     public Celular() {
     }
 
-    // Constructor completo (Para cuando registras un celular nuevo)
+
     public Celular(int id_celular, String marca, String modelo, double precio, int stock, SistemaOperativo sistema_operativo, Gama gama) {
         this.id_celular = id_celular;
         this.marca = marca;
@@ -28,7 +28,6 @@ public class Celular {
         this.gama = gama;
     }
 
-    // Getters y Setters
 
 
     public int getId_celular() {

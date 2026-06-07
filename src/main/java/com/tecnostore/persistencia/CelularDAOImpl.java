@@ -57,7 +57,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public void eliminar(int id) throws SQLException {
-        // En vez de DELETE, lo "apagamos" lógicamente
+
         String sql = "UPDATE celulares SET activo = false WHERE id_celular = ?";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
@@ -70,7 +70,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public List<Celular> listar() throws SQLException {
-        // Agregamos la condición WHERE activo = true
+
         String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE activo = true";
         List<Celular> listaCelulares = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public class CelularDAOImpl implements ICelularDAO {
 
     @Override
     public Celular buscarPorId(int id) throws SQLException {
-        // Agregamos AND activo = true para no vender celulares borrados
+
         String sql = "SELECT id_celular, marca, modelo, precio, stock, sistema_operativo, gama FROM celulares WHERE id_celular = ? AND activo = true";
 
         try (Connection con = ConexionDB.getInstancia().getConexion();
@@ -98,18 +98,16 @@ public class CelularDAOImpl implements ICelularDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Si encuentra el registro, construye el objeto Celular y lo retorna
+
                     return construirCelularDesdeResultSet(rs);
                 }
             }
         }
-        // Si no encuentra ninguna coincidencia, retorna null
+
         return null;
     }
 
-    /**
-     * Método auxiliar privado para evitar duplicar código al mapear los datos del ResultSet a la Entidad.
-     */
+
     private Celular construirCelularDesdeResultSet(ResultSet rs) throws SQLException {
         Celular celular = new Celular();
         celular.setId_celular(rs.getInt("id_celular"));
@@ -118,25 +116,25 @@ public class CelularDAOImpl implements ICelularDAO {
         celular.setPrecio(rs.getDouble("precio"));
         celular.setStock(rs.getInt("stock"));
 
-        // 1. Obtener Sistema Operativo sin forzar mayúsculas
+
         String soDB = rs.getString("sistema_operativo");
         celular.setSistema_operativo(buscarSistemaOperativo(soDB));
 
-        // 2. Obtener Gama sin forzar mayúsculas
+
         String gamaDB = rs.getString("gama");
         celular.setGama(buscarGama(gamaDB));
 
         return celular;
     }
 
-    // Métodos auxiliares para buscar sin importar mayúsculas/minúsculas
+
     private SistemaOperativo buscarSistemaOperativo(String valor) {
         for (SistemaOperativo so : SistemaOperativo.values()) {
             if (so.name().equalsIgnoreCase(valor)) {
                 return so;
             }
         }
-        return SistemaOperativo.Android; // Valor por defecto por seguridad
+        return SistemaOperativo.Android;
     }
 
     private Gama buscarGama(String valor) {
@@ -145,6 +143,6 @@ public class CelularDAOImpl implements ICelularDAO {
                 return g;
             }
         }
-        return Gama.MEDIA; // Valor por defecto por seguridad
+        return Gama.MEDIA;
     }
 }

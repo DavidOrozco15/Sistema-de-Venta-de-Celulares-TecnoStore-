@@ -14,11 +14,5 @@ public interface ICelularDAO {
 
     List<Celular> listar() throws SQLException;
 
-    /**
-     * Busca un celular en la base de datos por su identificador único.
-     * @param id El ID del celular a buscar.
-     * @return El objeto Celular si se encuentra; null si no existe en la BD.
-     * @throws SQLException Si ocurre un error al ejecutar el SELECT.
-     */
     Celular buscarPorId(int id) throws SQLException;
 }

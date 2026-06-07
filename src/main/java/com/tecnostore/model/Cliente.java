@@ -7,7 +7,7 @@ public class Cliente {
     private String correo;
     private String telefono;
 
-    // Constructor sin ID porque la base de datos lo genera
+
     public Cliente(String nombre, String identificacion,
                    String correo,  String telefono) {
         this.nombre         = nombre;
@@ -16,7 +16,7 @@ public class Cliente {
         this.telefono       = telefono;
     }
 
-    // Constructor con ID para cargar desde la Base de datos
+
     public Cliente(int id, String nombre, String identificacion,
                    String correo,  String telefono) {
         this.id             = id;

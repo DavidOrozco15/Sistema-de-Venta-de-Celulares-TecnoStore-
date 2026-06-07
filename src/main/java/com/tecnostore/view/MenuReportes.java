@@ -3,8 +3,6 @@ package com.tecnostore.view;
 import com.tecnostore.config.ScannerSingleton;
 import com.tecnostore.controller.ReporteController;
 
-import java.util.Scanner;
-
 public class MenuReportes {
 
     private final ReporteController reporteController;
@@ -24,13 +22,14 @@ public class MenuReportes {
             System.out.println("║  1. Stock bajo (< 5 unidades)        ║");
             System.out.println("║  2. Top 3 más vendidos               ║");
             System.out.println("║  3. Ventas totales por mes           ║");
+            System.out.println("║  4. Descargar Reporte Ventas (.txt)  ║"); // ← Nueva Opción
             System.out.println("╠══════════════════════════════════════╣");
-            System.out.println("║  4. Volver al Menú Principal         ║");
+            System.out.println("║  5. Volver al Menú Principal         ║"); // ← Cambio a opción 5
             System.out.println("╚══════════════════════════════════════╝");
 
             opcion = teclado.leerEntero("Seleccione Reporte: ");
             procesarOpcion(opcion);
-        } while (opcion != 4);
+        } while (opcion != 5); // ← Cambio a condición 5
     }
 
     private void procesarOpcion(int opcion) {
@@ -38,7 +37,8 @@ public class MenuReportes {
             case 1 -> mostrarStockBajo();
             case 2 -> mostrarTop3();
             case 3 -> mostrarVentasPorMes();
-            case 4 -> System.out.println("Regresando...");
+            case 4 -> descargarReporteVentasTXT(); // ← Enlace a la nueva función
+            case 5 -> System.out.println("Regresando...");
             default -> System.out.println("❌ Opción inválida.");
         }
     }
@@ -63,5 +63,14 @@ public class MenuReportes {
         reporteController.listarVentasPorMes().forEach((mes, total) ->
                 System.out.printf("📅 %-12s: $%,.2f%n", mes.toString(), total)
         );
+    }
+
+
+    private void descargarReporteVentasTXT() {
+        System.out.println("\n💾 --- DESCARGAR REPORTE DE VENTAS (TXT) ---");
+        String nombreArchivo = teclado.leerTexto("Ingrese el nombre para el archivo (ej: reporte_ventas): ");
+
+        String resultado = reporteController.descargarReporteVentas(nombreArchivo);
+        System.out.println(resultado);
     }
 }

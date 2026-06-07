@@ -14,7 +14,6 @@ public class ClienteController {
         this.entrada = ScannerSingleton.getInstancia();
     }
 
-    // Registra un nuevo cliente en el sistema
     public void registrar() {
         System.out.println("\n╔══════════════════════════════════════╗");
         System.out.println("║       Registrar Nuevo Cliente        ║");

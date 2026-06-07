@@ -13,13 +13,11 @@ public class GestorClientes {
         this.clienteDAO = clienteDAO;
     }
 
-    // Registra un nuevo cliente tras validar sus datos
     public Cliente registrarCliente(String nombre, String identificacion,
                                     String correo, String telefono) {
         ValidadorCliente.validarCampos(nombre, identificacion, correo, telefono);
 
         try {
-            // Verifica si la identificación ya está registrada
             if (clienteDAO.existeIdentificacion(identificacion)) {
                 throw new IllegalArgumentException("❌ Ya existe un cliente con la identificación: " + identificacion);
             }

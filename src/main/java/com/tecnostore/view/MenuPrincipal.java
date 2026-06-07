@@ -14,7 +14,7 @@ public class MenuPrincipal {
     private final ReporteController reporteController;
     private final ScannerSingleton  teclado;
 
-    // Constructor único corregido que recibe todos tus controladores
+
     public MenuPrincipal(CelularController celularController,
                          ClienteController clienteController,
                          VentaController   ventaController,

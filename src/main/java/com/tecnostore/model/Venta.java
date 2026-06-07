@@ -11,7 +11,7 @@ public class Venta {
     private LocalDate fecha;
     private double        total;
 
-    // Constructor sin ID porque la base de datos lo genera
+
     public Venta(Cliente cliente, List<ItemVenta> items, LocalDate fecha, double total) {
         this.cliente = cliente;
         this.items   = items;
@@ -19,7 +19,6 @@ public class Venta {
         this.total   = total;
     }
 
-    // Constructor con ID para cargar desde la Base de datos
     public Venta(int id, Cliente cliente, List<ItemVenta> items,
                  LocalDate fecha, double total) {
         this.id      = id;

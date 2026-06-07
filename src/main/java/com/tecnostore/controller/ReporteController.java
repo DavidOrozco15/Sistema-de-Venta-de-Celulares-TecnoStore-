@@ -3,6 +3,7 @@ package com.tecnostore.controller;
 import com.tecnostore.model.Celular;
 import com.tecnostore.service.GestorReporte;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Month;
 import java.util.List;
@@ -40,6 +41,26 @@ public class ReporteController {
         } catch (SQLException e) {
             System.err.println("❌ Error al procesar ventas mensuales: " + e.getMessage());
             return Map.of();
+        }
+    }
+
+
+    public String descargarReporteVentas(String nombreArchivo) {
+        try {
+            // Asegurar la extensión correcta del archivo
+            if (!nombreArchivo.toLowerCase().endsWith(".txt")) {
+                nombreArchivo += ".txt";
+            }
+
+            // Corregido: Usamos 'reporteService' que es tu variable real de clase
+            reporteService.generarReporteTXT(nombreArchivo);
+
+            return "✅ Archivo generado exitosamente como: " + nombreArchivo;
+
+        } catch (SQLException e) {
+            return "❌ Error en la base de datos al recopilar las ventas: " + e.getMessage();
+        } catch (IOException e) {
+            return "❌ Error al crear o escribir el archivo físico: " + e.getMessage();
         }
     }
 }

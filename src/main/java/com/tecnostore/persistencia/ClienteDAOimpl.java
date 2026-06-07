@@ -15,7 +15,7 @@ public class ClienteDAOimpl implements IClienteDAO {
         return ConexionDB.getInstancia().getConexion();
     }
 
-    // Registro de Clientes
+
     @Override
     public Cliente registrar(Cliente cliente) throws SQLException {
         String sql = "INSERT INTO clientes (nombre, identificacion, correo, telefono) "

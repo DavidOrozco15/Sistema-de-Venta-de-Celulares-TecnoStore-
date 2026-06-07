@@ -31,7 +31,7 @@ public class VentaDAOimpl implements IVentaDAO {
         con.setAutoCommit(false); // ← inicio de transacción
 
         try {
-            // 1. Insertar en ventas
+
             String sqlVenta = "INSERT INTO ventas (id_cliente, fecha, total) " +
                     "VALUES (?, ?, ?)";
 
@@ -48,7 +48,7 @@ public class VentaDAOimpl implements IVentaDAO {
                 }
             }
 
-            // 2. Insertar cada ítem en detalle_ventas
+
             String sqlDetalle = "INSERT INTO detalle_ventas " +
                     "(id_venta, id_celular, cantidad, subtotal) " +
                     "VALUES (?, ?, ?, ?)";
@@ -75,10 +75,10 @@ public class VentaDAOimpl implements IVentaDAO {
                 psStock.executeBatch();
             }
 
-            con.commit(); // ← confirmar transacción
+            con.commit();
 
         } catch (SQLException e) {
-            con.rollback(); // ← revertir si algo falla
+            con.rollback();
             throw e;
         } finally {
             con.setAutoCommit(autoCommitOriginal);
@@ -128,7 +128,7 @@ public class VentaDAOimpl implements IVentaDAO {
     @Override
     public List<Venta> listar() throws SQLException {
         List<Venta> ventas = new ArrayList<>();
-        // Hacemos JOIN con clientes porque tu constructor de Venta exige un objeto Cliente obligatoriamente
+
         String sql = "SELECT v.id_venta, v.fecha, v.total, " +
                 "       c.id_cliente, c.nombre, c.identificacion, c.correo, c.telefono " +
                 "FROM ventas v " +
@@ -139,7 +139,7 @@ public class VentaDAOimpl implements IVentaDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                // 1. Reconstruimos el Cliente básico requerido por el constructor
+
                 Cliente cliente = new Cliente(
                         rs.getInt("id_cliente"),
                         rs.getString("nombre"),
@@ -152,7 +152,6 @@ public class VentaDAOimpl implements IVentaDAO {
                 LocalDate fecha = rs.getDate("fecha").toLocalDate();
                 double total = rs.getDouble("total");
 
-                // 2. Instanciamos pasándole una lista vacía de ítems (ya que este método no trae detalles)
                 Venta venta = new Venta(idVenta, cliente, new ArrayList<>(), fecha, total);
                 ventas.add(venta);
             }
@@ -164,7 +163,7 @@ public class VentaDAOimpl implements IVentaDAO {
     public List<Venta> listarConDetalles() throws SQLException {
         List<Venta> ventas = new ArrayList<>();
 
-        // Query completa uniendo Ventas, Clientes, Detalles (ItemVenta) y Celulares
+
         String sql = "SELECT v.id_venta, v.fecha, v.total, " +
                 "       cl.id_cliente, cl.nombre, cl.identificacion, cl.correo, cl.telefono, " +
                 "       dv.id_detalle_venta, dv.cantidad, dv.subtotal, " +
@@ -185,10 +184,9 @@ public class VentaDAOimpl implements IVentaDAO {
             while (rs.next()) {
                 int idVenta = rs.getInt("id_venta");
 
-                // Si cambiamos de venta en el ResultSet o es la primera iteración
                 if (ventaActual == null || ventaActual.getId() != idVenta) {
 
-                    // 1. Reconstruimos el Cliente
+
                     Cliente cliente = new Cliente(
                             rs.getInt("id_cliente"),
                             rs.getString("nombre"),
@@ -200,16 +198,15 @@ public class VentaDAOimpl implements IVentaDAO {
                     LocalDate fecha = rs.getDate("fecha").toLocalDate();
                     double total = rs.getDouble("total");
 
-                    // 2. Inicializamos la lista de ítems para esta nueva venta
+
                     itemsActuales = new ArrayList<>();
 
-                    // 3. Creamos la venta usando tu segundo constructor (con ID)
+
                     ventaActual = new Venta(idVenta, cliente, itemsActuales, fecha, total);
                     ventas.add(ventaActual);
                 }
 
-                // 4. Reconstruimos el Celular para asignárselo al ítem
-                // Nota: Convertimos el String de la BD al Enum Gama correspondiente
+
                 Gama gamaEnum = Gama.valueOf(rs.getString("gama").toUpperCase());
                 String soBD = rs.getString("sistema_operativo").trim();
                 SistemaOperativo soEnum = SistemaOperativo.valueOf(soBD);
@@ -224,7 +221,6 @@ public class VentaDAOimpl implements IVentaDAO {
                         gamaEnum
                 );
 
-                // 5. Creamos el ItemVenta usando tu constructor con ID
                 ItemVenta item = new ItemVenta(
                         rs.getInt("id_detalle_venta"),
                         celular,
@@ -232,7 +228,7 @@ public class VentaDAOimpl implements IVentaDAO {
                         rs.getDouble("subtotal")
                 );
 
-                // 6. Agregamos el ítem a la lista interna de la venta que se está procesando
+
                 itemsActuales.add(item);
             }
         }
